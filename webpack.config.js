@@ -2,6 +2,8 @@
 const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {
@@ -50,18 +52,29 @@ module.exports = [
       ],
     },
     name: "client",
+    optimization: {
+      // chunkIds: 'named',
+      splitChunks: {
+        // chunks: 'initial',
+      },
+    },
     output: {
+      filename: '[name].bundle.js',
       path: DIST_PUBLIC,
     },
     plugins: [
       new CopyPlugin({
         patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
       }),
+      new BundleAnalyzerPlugin(),
+      new HtmlWebpackPlugin({
+        template: "./public/index.html"
+      })
     ],
     resolve: {
       extensions: [".js", ".jsx"],
     },
-    target: "web",
+    target: "web"  
   },
   {
     devtool: "inline-source-map",

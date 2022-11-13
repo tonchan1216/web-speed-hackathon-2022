@@ -1,15 +1,17 @@
-import React from "react";
-import { Route, Routes as RouterRoutes } from "react-router-dom";
+import React, {lazy, Suspense} from "react";
+import { BrowserRouter, Route, Routes as RouterRoutes } from "react-router-dom";
 
 import { CommonLayout } from "./layouts/CommonLayout";
 import { Top } from "./pages/Top";
-import { Odds } from "./pages/races/Odds";
-import { RaceCard } from "./pages/races/RaceCard";
-import { RaceResult } from "./pages/races/RaceResult";
+const Odds = lazy(() => import('./pages/races/Odds'));
+const RaceCard = lazy(() => import('./pages/races/RaceCard'));
+const RaceResult = lazy(() => import('./pages/races/RaceResult'));
 
 /** @type {React.VFC} */
 export const Routes = () => {
   return (
+    <BrowserRouter>
+    <Suspense fallback={<div>Loading...</div>}>
     <RouterRoutes>
       <Route element={<CommonLayout />} path="/">
         <Route index element={<Top />} />
@@ -21,5 +23,8 @@ export const Routes = () => {
         </Route>
       </Route>
     </RouterRoutes>
+    </Suspense>
+    </BrowserRouter>
+
   );
 };
