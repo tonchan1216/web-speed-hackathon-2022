@@ -2,7 +2,6 @@
 const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const nodeExternals = require("webpack-node-externals");
 
@@ -53,9 +52,21 @@ module.exports = [
     },
     name: "client",
     optimization: {
-      // chunkIds: 'named',
       splitChunks: {
-        // chunks: 'initial',
+        cacheGroups: {
+          vendors: {
+            chunks: 'initial',
+            name: 'vendors',
+            priority: 0,
+          },
+          // zengin: {
+          //   chunks: 'all',
+          //   name: 'zengin',
+          //   priority: 10,
+          //   test: /[\\/]node_modules[\\/](zengin-code)[\\/]/
+          // },
+        },
+        chunks: 'initial'
       },
     },
     output: {
@@ -67,9 +78,6 @@ module.exports = [
         patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
       }),
       new BundleAnalyzerPlugin(),
-      new HtmlWebpackPlugin({
-        template: "./public/index.html"
-      })
     ],
     resolve: {
       extensions: [".js", ".jsx"],
