@@ -2,6 +2,7 @@
 const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {
@@ -50,18 +51,38 @@ module.exports = [
       ],
     },
     name: "client",
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendors: {
+            chunks: 'initial',
+            name: 'vendors',
+            priority: 0,
+          },
+          // zengin: {
+          //   chunks: 'all',
+          //   name: 'zengin',
+          //   priority: 10,
+          //   test: /[\\/]node_modules[\\/](zengin-code)[\\/]/
+          // },
+        },
+        chunks: 'initial'
+      },
+    },
     output: {
+      filename: '[name].bundle.js',
       path: DIST_PUBLIC,
     },
     plugins: [
       new CopyPlugin({
         patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
       }),
+      new BundleAnalyzerPlugin(),
     ],
     resolve: {
       extensions: [".js", ".jsx"],
     },
-    target: "web",
+    target: "web"  
   },
   {
     devtool: "inline-source-map",

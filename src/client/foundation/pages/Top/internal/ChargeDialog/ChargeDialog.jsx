@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import React, { forwardRef, useCallback, useState } from "react";
-import zenginCode from "zengin-code";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 
 import { Dialog } from "../../../../components/layouts/Dialog";
 import { Spacer } from "../../../../components/layouts/Spacer";
@@ -23,6 +22,29 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
   const [branchCode, setBranchCode] = useState("");
   const [accountNo, setAccountNo] = useState("");
   const [amount, setAmount] = useState(0);
+  const [zengin, setzengin] = useState({});
+  const [bank, setbank] = useState({});
+  const [bankList, setbankList] = useState({});
+  const [branch, setbranch] = useState({});
+
+  useEffect(() => {
+    let ignore = false;
+
+    (async () => {
+      // const zenginCode = await import("zengin-code");
+      const zenginCode = await fetch("https://zengin-code.github.io/api/banks.json");
+      if (!ignore) {
+        const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
+          code,
+          name,
+        }));
+        setbankList(bankList)
+        setzengin(zenginCode)
+      }
+    })()
+
+    return () => { ignore = true };
+  }, []);
 
   const clearForm = useCallback(() => {
     setBankCode("");
@@ -39,10 +61,12 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
   const handleCodeChange = useCallback((e) => {
     setBankCode(e.currentTarget.value);
     setBranchCode("");
+    setbank(zengin[bankCode])
   }, []);
 
   const handleBranchChange = useCallback((e) => {
     setBranchCode(e.currentTarget.value);
+    setbranch(zengin[bankCode]?.branches[branchCode])      
   }, []);
 
   const handleAccountNoChange = useCallback((e) => {
@@ -67,12 +91,9 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
     [charge, bankCode, branchCode, accountNo, amount, onComplete, clearForm],
   );
 
-  const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
-    code,
-    name,
-  }));
-  const bank = zenginCode[bankCode];
-  const branch = bank?.branches[branchCode];
+  const isNotEmpty = (obj) => {
+    return Object.keys(obj).length;
+  }
 
   return (
     <Dialog ref={ref} onClose={handleCloseDialog}>
@@ -92,12 +113,13 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
             </label>
 
             <datalist id="ChargeDialog-bank-list">
-              {bankList.map(({ code, name }) => (
+              {isNotEmpty(bankList) &&
+                bankList.map(({ code, name }) => (
                 <option key={code} value={code}>{`${name} (${code})`}</option>
               ))}
             </datalist>
 
-            {bank != null && (
+            {isNotEmpty(bank) && (
               <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
                 銀行名: {bank.name}銀行
               </motion.div>
@@ -113,7 +135,7 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
             </label>
 
             <datalist id="ChargeDialog-branch-list">
-              {bank != null &&
+              {isNotEmpty(bank) &&
                 Object.values(bank.branches).map((branch) => (
                   <option key={branch.code} value={branch.code}>
                     {branch.name}
@@ -121,7 +143,7 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
                 ))}
             </datalist>
 
-            {branch && (
+            {isNotEmpty(branch) && (
               <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
                 支店名: {branch.name}
               </motion.div>
