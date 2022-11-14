@@ -22,7 +22,6 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
   const [branchCode, setBranchCode] = useState("");
   const [accountNo, setAccountNo] = useState("");
   const [amount, setAmount] = useState(0);
-  const [zengin, setzengin] = useState({});
   const [bank, setbank] = useState({});
   const [bankList, setbankList] = useState({});
   const [branch, setbranch] = useState({});
@@ -31,18 +30,15 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
     let ignore = false;
 
     (async () => {
-      // const zenginCode = await import("zengin-code");
-      const zenginCode = await fetch("https://zengin-code.github.io/api/banks.json");
+      const zenginCode = await fetch("https://zengin-code.github.io/api/banks.json").then((res) => (res.json()));
       if (!ignore) {
         const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
           code,
           name,
         }));
-        setbankList(bankList)
-        setzengin(zenginCode)
+        setbankList(bankList);
       }
     })()
-
     return () => { ignore = true };
   }, []);
 
@@ -59,15 +55,28 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
   });
 
   const handleCodeChange = useCallback((e) => {
-    setBankCode(e.currentTarget.value);
+    const value = e.currentTarget.value
+    let bk = bankList.find(el => el.code === value)
+    setBankCode(value);
     setBranchCode("");
-    setbank(zengin[bankCode])
-  }, []);
+    if(bk) {
+      (async () => {
+        const zenginCode = await fetch(`https://zengin-code.github.io/api/branches/${value}.json`).then((res) => (res.json()));
+        bk.branches = Object.entries(zenginCode).map(([code, { name }]) => ({
+          code,
+          name,
+        }));
+        setbank(bk)
+      })()  
+    }
+  }, [bankList]);
 
   const handleBranchChange = useCallback((e) => {
-    setBranchCode(e.currentTarget.value);
-    setbranch(zengin[bankCode]?.branches[branchCode])      
-  }, []);
+    const value = e.currentTarget.value
+    const br = bank.branches.find(el => el.code === value)
+    setBranchCode(value);
+    if(br) setbranch(br)      
+  }, [bank]);
 
   const handleAccountNoChange = useCallback((e) => {
     setAccountNo(e.currentTarget.value);
