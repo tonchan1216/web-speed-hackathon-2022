@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = styled.img`
+  aspect-ratio: 1440 / 1033;
   display: block;
   margin: 0 auto;
-  aspect-ratio: 1440 / 1033;
   width: 100%;
 `;
 
