@@ -8,7 +8,7 @@ import React from "react";
  */
 
 /** @type {React.VFC<Props>} */
-export const TrimmedImage = ({ height, src, width }) => {
-  const thumbnail = src.replace(/(races|players)/, '$1/thumbnail')
+export const TrimmedImage = ({ height, src, type="thumbnail", width }) => {
+  const thumbnail = src.replace(/(races|players)/, `$1/${type}`)
   return <img height={height} src={thumbnail} width={width} />;
 };
