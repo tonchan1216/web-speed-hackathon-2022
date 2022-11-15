@@ -40,6 +40,12 @@ const RaceTitle = styled.h2`
   font-weight: bold;
 `;
 
+const EmptyImage = styled.div`
+  height: 100px;
+  visibility: hidden;
+`;
+
+
 /**
  * @typedef ItemProps
  * @property {Model.Race} race
@@ -102,3 +108,47 @@ const Item = ({ race }) => {
   );
 };
 RecentRaceList.Item = Item;
+
+/** @type {React.VFC} */
+const EmptyItem = () => {
+  const {
+    abortAnimation,
+    resetAnimation,
+    startAnimation,
+    value: opacity,
+  } = useAnimation({
+    duration: 500,
+    end: 1,
+    start: 0,
+    timingFunction: easeOutCubic,
+  });
+
+  useEffect(() => {
+    resetAnimation();
+    startAnimation();
+
+    return () => {
+      abortAnimation();
+    };
+  }, [startAnimation, abortAnimation, resetAnimation]);
+
+
+  return (
+    <ItemWrapper $opacity={opacity}>
+      <Stack horizontal alignItems="center" justifyContent="space-between">
+        <Stack gap={Space * 1}>
+          <RaceTitle>Now Loading</RaceTitle>
+        </Stack>
+
+        <Spacer mr={Space * 2} />
+
+        <Stack.Item grow={0} shrink={0}>
+          <Stack horizontal alignItems="center" gap={Space * 2}>
+            <EmptyImage></EmptyImage>
+          </Stack>
+        </Stack.Item>
+      </Stack>
+    </ItemWrapper>
+  );
+};
+RecentRaceList.EmptyItem = EmptyItem;
