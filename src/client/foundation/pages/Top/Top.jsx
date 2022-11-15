@@ -146,16 +146,20 @@ export const Top = () => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        {todayRacesToShow.length > 0 && (
-          <RecentRaceList>
-            {todayRacesToShow.map((race) => (
-              <RecentRaceList.Item key={race.id} race={race} />
-            ))}
-          </RecentRaceList>
-        )}
+        <RecentRaceList>
+          {todayRacesToShow.length == 0 && (
+              <RecentRaceList.EmptyItem />
+          )}
+
+          {todayRacesToShow.length > 0 && (
+              todayRacesToShow.map((race) => (
+                <RecentRaceList.Item key={race.id} race={race} />
+              ))
+          )}
+        </RecentRaceList>
       </section>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
       </Suspense>
     </Container>
