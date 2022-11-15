@@ -11,7 +11,6 @@ import { Heading } from "../../components/typographies/Heading";
 import { useAuthorizedFetch } from "../../hooks/useAuthorizedFetch";
 import { useFetch } from "../../hooks/useFetch";
 import { Color, Radius, Space } from "../../styles/variables";
-import { isSameDay } from "../../utils/DateUtils";
 import { authorizedJsonFetcher, jsonFetcher } from "../../utils/HttpUtils";
 import { assets } from "../../utils/UrlUtils.js";
 
@@ -92,6 +91,8 @@ padding: ${Space * 1}px ${Space * 2}px;
 /** @type {React.VFC} */
 export const Top = () => {
   const { date = moment().format("YYYY-MM-DD") } = useParams();
+  const since = moment(date).startOf('days').unix()
+  const until = moment(date).endOf('days').unix()
 
   const chargeDialogRef = useRef(null);
 
@@ -100,7 +101,7 @@ export const Top = () => {
     authorizedJsonFetcher,
   );
 
-  const { data: raceData } = useFetch("/api/races", jsonFetcher);
+  const { data: raceData } = useFetch(`/api/races?since=${since}&until=${until}`, jsonFetcher);
 
   const handleClickChargeButton = useCallback(() => {
     if (chargeDialogRef.current === null) {
@@ -120,9 +121,6 @@ export const Top = () => {
           .sort(
             (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
               moment(a.startAt) - moment(b.startAt),
-          )
-          .filter((/** @type {Model.Race} */ race) =>
-            isSameDay(race.startAt, date),
           )
       : [];
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
@@ -148,16 +146,20 @@ export const Top = () => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        {todayRacesToShow.length > 0 && (
-          <RecentRaceList>
-            {todayRacesToShow.map((race) => (
-              <RecentRaceList.Item key={race.id} race={race} />
-            ))}
-          </RecentRaceList>
-        )}
+        <RecentRaceList>
+          {todayRacesToShow.length == 0 && (
+              <RecentRaceList.EmptyItem />
+          )}
+
+          {todayRacesToShow.length > 0 && (
+              todayRacesToShow.map((race) => (
+                <RecentRaceList.Item key={race.id} race={race} />
+              ))
+          )}
+        </RecentRaceList>
       </section>
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
       </Suspense>
     </Container>
