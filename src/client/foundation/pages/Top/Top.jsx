@@ -127,7 +127,7 @@ export const Top = () => {
 
   return (
     <Container>
-      {<HeroImage url={assets('/images/hero.jpg')} />}
+      <HeroImage url={assets('/images/hero.jpg')} />
 
       <Spacer mt={Space * 2} />
       {userData && (
