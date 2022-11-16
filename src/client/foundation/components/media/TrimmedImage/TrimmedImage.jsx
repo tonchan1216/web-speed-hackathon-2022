@@ -3,12 +3,13 @@ import React from "react";
 /**
  * @typedef Props
  * @property {string} src
+ * @property {string} type
  * @property {number} width
  * @property {number} height
- */
+*/
 
 /** @type {React.VFC<Props>} */
-export const TrimmedImage = ({ src, type="thumbnail" }) => {
+export const TrimmedImage = ({ height, src, type="thumbnail", width }) => {
   const thumbnail = src.replace(/(races|players)/, `$1/${type}`)
-  return <img src={thumbnail} />;
+  return <img height={height} src={thumbnail} width={width}/>;
 };
