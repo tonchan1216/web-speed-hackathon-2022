@@ -1,6 +1,6 @@
 import "regenerator-runtime/runtime";
+import fastifySensible from "@fastify/sensible";
 import fastify from "fastify";
-import fastifySensible from "fastify-sensible";
 
 import { User } from "../model/index.js";
 
@@ -9,17 +9,21 @@ import { spaRoute } from "./routes/spa.js";
 import { createConnection } from "./typeorm/connection.js";
 import { initialize } from "./typeorm/initialize.js";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const envToLogger = {
+  development: {
+    transport: {
+      options: {
+        ignore: 'pid,hostname',
+        translateTime: 'HH:MM:ss Z',
+      },
+      target: 'pino-pretty',
+    },
+  },
+  production: true,
+}
 
 const server = fastify({
-  logger: IS_PRODUCTION
-    ? false
-    : {
-        prettyPrint: {
-          ignore: "pid,hostname",
-          translateTime: "SYS:HH:MM:ss",
-        },
-      },
+  logger: envToLogger[process.env.NODE_ENV] ?? true // defaults to true if no entry matches in the map
 });
 server.register(fastifySensible);
 
@@ -53,7 +57,7 @@ server.register(spaRoute);
 const start = async () => {
   try {
     await initialize();
-    await server.listen(process.env.PORT || 3000, "0.0.0.0");
+    await server.listen({host: "0.0.0.0", port: process.env.PORT || 3000});
   } catch (err) {
     server.log.error(err);
     process.exit(1);
