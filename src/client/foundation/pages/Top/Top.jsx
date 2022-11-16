@@ -159,9 +159,11 @@ export const Top = () => {
         </RecentRaceList>
       </section>
 
-      <Suspense fallback={<div></div>}>
-        <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
-      </Suspense>
+      {userData && (
+        <Suspense fallback={<div></div>}>
+          <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
+        </Suspense>
+      )}
     </Container>
   );
 };

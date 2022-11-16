@@ -38,7 +38,12 @@ server.addHook("onRequest", async (req, res) => {
 });
 
 server.addHook("onRequest", async (req, res) => {
-  res.header("Cache-Control", "no-cache, no-store, no-transform");
+  const ext = req.url.split('.').pop()
+  if (ext == "jpg") {
+    res.header("Cache-Control", "public, max-age=86400");
+  } else {
+    res.header("Cache-Control", "no-cache, no-store, no-transform");
+  }
   // res.header("Connection", "close");
 });
 
