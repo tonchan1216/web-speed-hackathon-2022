@@ -55,8 +55,10 @@ server.register(apiRoute, { prefix: "/api" });
 server.register(spaRoute);
 
 const start = async () => {
+  console.log('Server Starting...')
   try {
     await initialize();
+    console.log('Server Initialized')
     await server.listen({host: "0.0.0.0", port: process.env.PORT || 3000});
   } catch (err) {
     server.log.error(err);

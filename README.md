@@ -94,3 +94,7 @@ API 仕様書は、[./docs/API.md](./docs/API.md)を参照してください。
 - Image data: Unsplash License
 - Color theme: MIT License (Tailwind Labs, Inc.)
 - Font: SIL Open Font License (MODI 工場／倒神神倒)
+
+## SQLITE3 INDEX
+- CREATE INDEX IDX_raceid_oddsItem ON odds_item (raceId);
+- CREATE INDEX IDX_raceid_raceEntry ON race_entry (raceId);
