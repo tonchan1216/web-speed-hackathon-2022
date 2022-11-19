@@ -127,7 +127,7 @@ export const Top = () => {
 
   return (
     <Container>
-      {<HeroImage url={assets('/images/hero.jpg')} />}
+      <HeroImage url={assets('/images/hero.jpg')} />
 
       <Spacer mt={Space * 2} />
       {userData && (
@@ -159,9 +159,11 @@ export const Top = () => {
         </RecentRaceList>
       </section>
 
-      <Suspense fallback={<div></div>}>
-        <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
-      </Suspense>
+      {userData && (
+        <Suspense fallback={<div></div>}>
+          <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
+        </Suspense>
+      )}
     </Container>
   );
 };
