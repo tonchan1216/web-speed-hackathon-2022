@@ -49,6 +49,8 @@ export const Odds = () => {
 
   return (
     <>
+      <Spacer mt={Space * 4} />
+
       <Callout $closed={isRaceClosed}>
         <i className="fas fa-info-circle" />
         {isRaceClosed

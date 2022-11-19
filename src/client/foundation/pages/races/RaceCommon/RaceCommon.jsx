@@ -53,7 +53,6 @@ export const RaceCommon = () => {
           <TabNav.Item aria-current={path == "result" ? "true" : undefined} to={`/races/${raceId}/result`}>結果</TabNav.Item>
         </TabNav>
 
-        <Spacer mt={Space * 4} />
         <Outlet context={[data]} />
       </Section>
     </Container>
