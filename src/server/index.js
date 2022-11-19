@@ -1,6 +1,6 @@
 import "regenerator-runtime/runtime";
+import fastifySensible from "@fastify/sensible";
 import fastify from "fastify";
-import fastifySensible from "fastify-sensible";
 
 import { User } from "../model/index.js";
 
@@ -9,17 +9,21 @@ import { spaRoute } from "./routes/spa.js";
 import { createConnection } from "./typeorm/connection.js";
 import { initialize } from "./typeorm/initialize.js";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const envToLogger = {
+  development: {
+    transport: {
+      options: {
+        ignore: 'pid,hostname',
+        translateTime: 'HH:MM:ss Z',
+      },
+      target: 'pino-pretty',
+    },
+  },
+  production: true,
+}
 
 const server = fastify({
-  logger: IS_PRODUCTION
-    ? false
-    : {
-        prettyPrint: {
-          ignore: "pid,hostname",
-          translateTime: "SYS:HH:MM:ss",
-        },
-      },
+  logger: envToLogger[process.env.NODE_ENV] ?? true // defaults to true if no entry matches in the map
 });
 server.register(fastifySensible);
 
@@ -38,7 +42,12 @@ server.addHook("onRequest", async (req, res) => {
 });
 
 server.addHook("onRequest", async (req, res) => {
-  res.header("Cache-Control", "no-cache, no-store, no-transform");
+  const ext = req.url.split('.').pop()
+  if (ext == "jpg") {
+    res.header("Cache-Control", "public, max-age=86400");
+  } else {
+    res.header("Cache-Control", "no-cache, no-store, no-transform");
+  }
   // res.header("Connection", "close");
 });
 
@@ -46,9 +55,11 @@ server.register(apiRoute, { prefix: "/api" });
 server.register(spaRoute);
 
 const start = async () => {
+  console.log('Server Starting...')
   try {
     await initialize();
-    await server.listen(process.env.PORT || 3000, "0.0.0.0");
+    console.log('Server Initialized')
+    await server.listen({host: "0.0.0.0", port: process.env.PORT || 3000});
   } catch (err) {
     server.log.error(err);
     process.exit(1);

@@ -66,6 +66,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",
+    "@fastify/sensible": "^5.1.1",
+    "@fastify/static": "^6.5.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "axios": "^0.25.0",
     "bezier-easing": "^2.1.0",
@@ -73,9 +75,7 @@
     "es5-shim": "^4.6.5",
     "es6-shim": "^0.35.6",
     "es7-shim": "^6.0.0",
-    "fastify": "^3.25.3",
-    "fastify-sensible": "^3.1.2",
-    "fastify-static": "^4.5.0",
+    "fastify": "^4.10.0",
     "framer-motion": "^6.2.8",
     "lodash": "^4.17.21",
     "modern-css-reset": "^1.4.0",
@@ -87,10 +87,10 @@
     "react-router-dom": "6",
     "regenerator-runtime": "^0.13.9",
     "sqlite3": "^5.1.2",
-    "styled-components": "^5.3.3",
+    "styled-components": "^5.3.6",
     "typeorm": "^0.2.44",
-    "uuid": "^8.3.2",
-    "zengin-code": "^1.0.0-p20220130"
+    "unzipper": "^0.10.11",
+    "uuid": "^8.3.2"
   },
   "engines": {
     "node": "16.x.x"
