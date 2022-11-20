@@ -17,7 +17,10 @@ const DIST_PUBLIC = abs("./dist/public");
 /** @type {Array<import('webpack').Configuration>} */
 module.exports = [
   {
-    entry: path.join(SRC_ROOT, "client/index.jsx"),
+    entry: {
+      main: path.join(SRC_ROOT, "client/index.jsx"),
+      polyfill: ['core-js/stable', 'regenerator-runtime/runtime'],
+    },
     mode: "production",
     module: {
       rules: [
@@ -39,8 +42,11 @@ module.exports = [
                 [
                   "@babel/preset-env",
                   {
+                    corejs: 3,
                     modules: "cjs",
                     spec: true,
+                    targets: "defaults",
+                    useBuiltIns: 'usage'
                   },
                 ],
                 "@babel/preset-react",
