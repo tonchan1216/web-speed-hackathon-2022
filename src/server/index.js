@@ -43,7 +43,7 @@ server.addHook("onRequest", async (req, res) => {
 
 server.addHook("onRequest", async (req, res) => {
   const ext = req.url.split('.').pop()
-  if (ext == "jpg") {
+  if (["webp", "html", "ttf"].includes(ext)) {
     res.header("Cache-Control", "public, max-age=86400");
   } else {
     res.header("Cache-Control", "no-cache, no-store, no-transform");
