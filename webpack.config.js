@@ -18,7 +18,10 @@ const DIST_PUBLIC = abs("./dist/public");
 module.exports = [
   {
     devtool: "inline-source-map",
-    entry: path.join(SRC_ROOT, "client/index.jsx"),
+    entry: {
+      main: path.join(SRC_ROOT, "client/index.jsx"),
+      polyfill: ['core-js/stable', 'regenerator-runtime/runtime'],
+    },
     mode: "development",
     module: {
       rules: [
@@ -42,6 +45,7 @@ module.exports = [
                   {
                     modules: "cjs",
                     spec: true,
+                    targets: "defaults"
                   },
                 ],
                 "@babel/preset-react",
