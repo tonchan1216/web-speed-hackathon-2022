@@ -41,7 +41,7 @@ export const RaceCommon = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-          <TrimmedImage height={225} src={data ? data.image : ""} type="live" width={400}/>
+          <TrimmedImage height={225} src={data ? data.image : "/assets/images/races/gray.jpg"} type="live" width={400}/>
       </Section>
 
       <Spacer mt={Space * 2} />
