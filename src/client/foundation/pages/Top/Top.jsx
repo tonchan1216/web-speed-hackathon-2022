@@ -148,7 +148,9 @@ export const Top = () => {
         <Heading as="h1">本日のレース</Heading>
         <RecentRaceList>
           {todayRacesToShow.length == 0 && (
-              <RecentRaceList.EmptyItem />
+              [0,1,2].map((key) => (
+                <RecentRaceList.EmptyItem key={key} />
+              ))
           )}
 
           {todayRacesToShow.length > 0 && (
