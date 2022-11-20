@@ -17,6 +17,8 @@ export const RaceCard = () => {
 
   return (
     <>
+      <Spacer mt={Space * 2} />
+
       <PlayerPictureList>
         {data.entries.map((entry) => (
           <PlayerPictureList.Item
