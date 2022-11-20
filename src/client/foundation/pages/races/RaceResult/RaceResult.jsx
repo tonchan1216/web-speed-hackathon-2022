@@ -13,7 +13,6 @@ import { RaceResultSection } from "./internal/RaceResultSection";
 
 /** @type {React.VFC} */
 export const RaceResult = () => {
-  console.log(data)
   const { raceId } = useParams();
   const [data] = useOutletContext();
   const { data: ticketData } = useAuthorizedFetch(
