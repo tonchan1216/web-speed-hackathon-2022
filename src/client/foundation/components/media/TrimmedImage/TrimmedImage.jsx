@@ -18,5 +18,6 @@ const Wrapper = styled.img`
 /** @type {React.VFC<Props>} */
 export const TrimmedImage = ({ height, src, type="thumbnail", width }) => {
   const thumbnail = src.replace(/(races|players)/, `$1/${type}`)
-  return <Wrapper height={height} src={thumbnail} type={type} width={width} />;
+  const webp = thumbnail.replace(/(.*)\.jpg/, `$1.webp`)
+  return <Wrapper height={height} src={webp} type={type} width={width} />;
 };
