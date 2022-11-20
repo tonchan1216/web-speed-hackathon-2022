@@ -1,5 +1,5 @@
 import _ from "lodash";
-import moment from "moment-timezone";
+import moment from "moment-mini";
 import { v4 as uuid } from "uuid";
 
 import { Race } from "../src/model/index.js";

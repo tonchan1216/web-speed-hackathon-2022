@@ -58,12 +58,6 @@ module.exports = [
             name: 'vendors',
             priority: 0,
           },
-          // zengin: {
-          //   chunks: 'all',
-          //   name: 'zengin',
-          //   priority: 10,
-          //   test: /[\\/]node_modules[\\/](zengin-code)[\\/]/
-          // },
         },
         chunks: 'initial'
       },
