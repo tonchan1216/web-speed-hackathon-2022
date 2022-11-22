@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes as RouterRoutes } from "react-router-dom";
 
-import { CommonLayout } from "./layouts/CommonLayout";
-import { Top } from "./pages/Top";
+const CommonLayout = lazy(() => import("./layouts/CommonLayout"));
+const Top = lazy(() => import("./pages/Top"));
 const RaceCommon = lazy(() => import("./pages/races/RaceCommon"));
 const Odds = lazy(() => import("./pages/races/Odds"));
 const RaceCard = lazy(() => import("./pages/races/RaceCard"));
@@ -12,7 +12,7 @@ const RaceResult = lazy(() => import("./pages/races/RaceResult"));
 export const Routes = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div></div>}>
         <RouterRoutes>
           <Route element={<CommonLayout />} path="/">
             <Route index element={<Top />} />
