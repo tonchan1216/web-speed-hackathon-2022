@@ -42,7 +42,6 @@ export const RaceResult = () => {
 
       <Spacer mt={Space * 2} />
       <RaceResultSection />
-
     </>
   );
 };

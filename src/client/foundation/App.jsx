@@ -11,7 +11,7 @@ export const App = () => {
     <StyleSheetManager disableCSSOMInjection>
       <AuthContextProvider>
         <GlobalStyle />
-          <Routes />
+        <Routes />
       </AuthContextProvider>
     </StyleSheetManager>
   );

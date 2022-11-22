@@ -30,7 +30,9 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
     let ignore = false;
 
     (async () => {
-      const zenginCode = await fetch("https://zengin-code.github.io/api/banks.json").then((res) => (res.json()));
+      const zenginCode = await fetch(
+        "https://zengin-code.github.io/api/banks.json",
+      ).then((res) => res.json());
       if (!ignore) {
         const bankList = Object.entries(zenginCode).map(([code, { name }]) => ({
           code,
@@ -38,8 +40,10 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
         }));
         setbankList(bankList);
       }
-    })()
-    return () => { ignore = true };
+    })();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const clearForm = useCallback(() => {
@@ -54,29 +58,37 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
     method: "POST",
   });
 
-  const handleCodeChange = useCallback((e) => {
-    const value = e.currentTarget.value
-    let bk = bankList.find(el => el.code === value)
-    setBankCode(value);
-    setBranchCode("");
-    if(bk) {
-      (async () => {
-        const zenginCode = await fetch(`https://zengin-code.github.io/api/branches/${value}.json`).then((res) => (res.json()));
-        bk.branches = Object.entries(zenginCode).map(([code, { name }]) => ({
-          code,
-          name,
-        }));
-        setbank(bk)
-      })()  
-    }
-  }, [bankList]);
+  const handleCodeChange = useCallback(
+    (e) => {
+      const value = e.currentTarget.value;
+      let bk = bankList.find((el) => el.code === value);
+      setBankCode(value);
+      setBranchCode("");
+      if (bk) {
+        (async () => {
+          const zenginCode = await fetch(
+            `https://zengin-code.github.io/api/branches/${value}.json`,
+          ).then((res) => res.json());
+          bk.branches = Object.entries(zenginCode).map(([code, { name }]) => ({
+            code,
+            name,
+          }));
+          setbank(bk);
+        })();
+      }
+    },
+    [bankList],
+  );
 
-  const handleBranchChange = useCallback((e) => {
-    const value = e.currentTarget.value
-    const br = bank.branches.find(el => el.code === value)
-    setBranchCode(value);
-    if(br) setbranch(br)      
-  }, [bank]);
+  const handleBranchChange = useCallback(
+    (e) => {
+      const value = e.currentTarget.value;
+      const br = bank.branches.find((el) => el.code === value);
+      setBranchCode(value);
+      if (br) setbranch(br);
+    },
+    [bank],
+  );
 
   const handleAccountNoChange = useCallback((e) => {
     setAccountNo(e.currentTarget.value);
@@ -102,7 +114,7 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
 
   const isNotEmpty = (obj) => {
     return Object.keys(obj).length;
-  }
+  };
 
   return (
     <Dialog ref={ref} onClose={handleCloseDialog}>
@@ -124,8 +136,8 @@ export const ChargeDialog = forwardRef(({ onComplete }, ref) => {
             <datalist id="ChargeDialog-bank-list">
               {isNotEmpty(bankList) &&
                 bankList.map(({ code, name }) => (
-                <option key={code} value={code}>{`${name} (${code})`}</option>
-              ))}
+                  <option key={code} value={code}>{`${name} (${code})`}</option>
+                ))}
             </datalist>
 
             {isNotEmpty(bank) && (

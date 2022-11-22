@@ -13,17 +13,17 @@ const envToLogger = {
   development: {
     transport: {
       options: {
-        ignore: 'pid,hostname',
-        translateTime: 'HH:MM:ss Z',
+        ignore: "pid,hostname",
+        translateTime: "HH:MM:ss Z",
       },
-      target: 'pino-pretty',
+      target: "pino-pretty",
     },
   },
   production: true,
-}
+};
 
 const server = fastify({
-  logger: envToLogger[process.env.NODE_ENV] ?? true // defaults to true if no entry matches in the map
+  logger: envToLogger[process.env.NODE_ENV] ?? true, // defaults to true if no entry matches in the map
 });
 server.register(fastifySensible);
 
@@ -42,7 +42,7 @@ server.addHook("onRequest", async (req, res) => {
 });
 
 server.addHook("onRequest", async (req, res) => {
-  const ext = req.url.split('.').pop()
+  const ext = req.url.split(".").pop();
   if (["webp", "html", "ttf"].includes(ext)) {
     res.header("Cache-Control", "public, max-age=86400");
   } else {
@@ -55,11 +55,11 @@ server.register(apiRoute, { prefix: "/api" });
 server.register(spaRoute);
 
 const start = async () => {
-  console.log('Server Starting...')
+  console.log("Server Starting...");
   try {
     await initialize();
-    console.log('Server Initialized')
-    await server.listen({host: "0.0.0.0", port: process.env.PORT || 3000});
+    console.log("Server Initialized");
+    await server.listen({ host: "0.0.0.0", port: process.env.PORT || 3000 });
   } catch (err) {
     server.log.error(err);
     process.exit(1);

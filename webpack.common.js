@@ -2,7 +2,7 @@
 const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {
@@ -36,7 +36,7 @@ module.exports = [
           use: {
             loader: "babel-loader",
             options: {
-              plugins: ['lodash'],
+              plugins: ["lodash"],
               presets: [
                 [
                   "@babel/preset-env",
@@ -45,7 +45,7 @@ module.exports = [
                     modules: "cjs",
                     spec: true,
                     targets: "defaults",
-                    useBuiltIns: 'usage'
+                    useBuiltIns: "usage",
                   },
                 ],
                 "@babel/preset-react",
@@ -60,28 +60,28 @@ module.exports = [
       splitChunks: {
         cacheGroups: {
           vendors: {
-            chunks: 'initial',
-            name: 'vendors',
+            chunks: "initial",
+            name: "vendors",
             priority: 0,
           },
         },
-        chunks: 'initial'
+        chunks: "initial",
       },
     },
     output: {
-      filename: '[name].bundle.js',
+      filename: "[name].bundle.js",
       path: DIST_PUBLIC,
     },
     plugins: [
       new CopyPlugin({
         patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
       }),
-      new LodashModuleReplacementPlugin()
+      new LodashModuleReplacementPlugin(),
     ],
     resolve: {
       extensions: [".js", ".jsx"],
     },
-    target: "web"  
+    target: "web",
   },
   {
     entry: path.join(SRC_ROOT, "server/index.js"),

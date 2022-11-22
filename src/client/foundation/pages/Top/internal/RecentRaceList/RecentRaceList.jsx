@@ -45,7 +45,6 @@ const EmptyImage = styled.div`
   visibility: hidden;
 `;
 
-
 /**
  * @typedef ItemProps
  * @property {Model.Race} race
@@ -131,7 +130,6 @@ const EmptyItem = () => {
       abortAnimation();
     };
   }, [startAnimation, abortAnimation, resetAnimation]);
-
 
   return (
     <ItemWrapper $opacity={opacity}>
