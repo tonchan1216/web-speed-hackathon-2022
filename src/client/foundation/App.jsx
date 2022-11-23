@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheetManager } from "styled-components";
 
 import { AuthContextProvider } from "./contexts/AuthContext";

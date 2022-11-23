@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes as RouterRoutes } from "react-router-dom";
 
 const CommonLayout = lazy(() => import("./layouts/CommonLayout"));

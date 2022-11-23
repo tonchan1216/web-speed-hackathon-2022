@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 

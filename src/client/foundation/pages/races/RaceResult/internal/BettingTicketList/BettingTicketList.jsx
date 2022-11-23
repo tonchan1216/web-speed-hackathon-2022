@@ -1,4 +1,4 @@
-import React from "react";
+import { Children } from "react";
 import styled from "styled-components";
 
 import { EntryCombination } from "../../../../../components/displays/EntryCombination";
@@ -57,7 +57,7 @@ const Placeholder = styled.div`
 `;
 
 export const BettingTicketList = ({ children }) => {
-  if (React.Children.count(children) === 0) {
+  if (Children.count(children) === 0) {
     return (
       <Placeholder>
         <IconSVG aria-hidden="true" data-icon="ticket-alt" data-prefix="fas" focusable="false" role="img" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
