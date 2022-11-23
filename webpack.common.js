@@ -48,7 +48,11 @@ module.exports = [
                     useBuiltIns: "usage",
                   },
                 ],
-                "@babel/preset-react",
+                [
+                  "@babel/preset-react",
+                  {
+                    "runtime": "automatic"
+                  }
               ],
             },
           },
@@ -59,16 +63,21 @@ module.exports = [
     optimization: {
       splitChunks: {
         cacheGroups: {
-          vendors: {
-            chunks: "initial",
-            name: "vendors",
-            priority: 0,
+          corejsVendor: {
+            chunks: 'all',
+            name: 'vendor-corejs',
+            test: /[\\/]node_modules[\\/](core-js)[\\/]/,
+          },
+          reactVendor: {
+            chunks: 'all',
+            name: 'vendor-react',
+            test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
           },
         },
-        chunks: "initial",
       },
     },
     output: {
+      chunkFilename: '[name].bundle.js',
       filename: "[name].bundle.js",
       path: DIST_PUBLIC,
     },
