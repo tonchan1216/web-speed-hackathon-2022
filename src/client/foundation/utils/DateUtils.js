@@ -1,12 +1,4 @@
 import moment from "moment-mini";
-/**
- * @param {string} dateLeft
- * @param {string} dateRight
- * @returns {boolean}
- */
-export const isSameDay = (dateLeft, dateRight) => {
-  return moment(dateLeft).isSame(moment(dateRight), "day");
-};
 
 /**
  *

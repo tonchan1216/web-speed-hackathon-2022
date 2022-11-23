@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { LinkButton } from "../../../../components/buttons/LinkButton";
@@ -44,7 +44,6 @@ const EmptyImage = styled.div`
   height: 100px;
   visibility: hidden;
 `;
-
 
 /**
  * @typedef ItemProps
@@ -131,7 +130,6 @@ const EmptyItem = () => {
       abortAnimation();
     };
   }, [startAnimation, abortAnimation, resetAnimation]);
-
 
   return (
     <ItemWrapper $opacity={opacity}>

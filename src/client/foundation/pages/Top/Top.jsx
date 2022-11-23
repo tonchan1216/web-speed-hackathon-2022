@@ -1,6 +1,6 @@
-import {difference, slice} from "lodash";
+import { difference, slice } from "lodash";
 import moment from "moment-mini";
-import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ import { Color, Radius, Space } from "../../styles/variables";
 import { authorizedJsonFetcher, jsonFetcher } from "../../utils/HttpUtils";
 import { assets } from "../../utils/UrlUtils.js";
 
-const ChargeDialog = lazy(() => import('./internal/ChargeDialog'));
+const ChargeDialog = lazy(() => import("./internal/ChargeDialog"));
 import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
 
@@ -78,21 +78,21 @@ function useTodayRacesWithAnimation(races) {
 }
 
 const ChargeButton = styled.button`
-background: ${Color.mono[700]};
-border-radius: ${Radius.MEDIUM};
-color: ${Color.mono[0]};
-padding: ${Space * 1}px ${Space * 2}px;
+  background: ${Color.mono[700]};
+  border-radius: ${Radius.MEDIUM};
+  color: ${Color.mono[0]};
+  padding: ${Space * 1}px ${Space * 2}px;
 
-&:hover {
-  background: ${Color.mono[800]};
-}
+  &:hover {
+    background: ${Color.mono[800]};
+  }
 `;
 
 /** @type {React.VFC} */
 export const Top = () => {
   const { date = moment().format("YYYY-MM-DD") } = useParams();
-  const since = moment(date).startOf('days').unix()
-  const until = moment(date).endOf('days').unix()
+  const since = moment(date).startOf("days").unix();
+  const until = moment(date).endOf("days").unix();
 
   const chargeDialogRef = useRef(null);
 
@@ -101,7 +101,10 @@ export const Top = () => {
     authorizedJsonFetcher,
   );
 
-  const { data: raceData } = useFetch(`/api/races?since=${since}&until=${until}`, jsonFetcher);
+  const { data: raceData } = useFetch(
+    `/api/races?since=${since}&until=${until}`,
+    jsonFetcher,
+  );
 
   const handleClickChargeButton = useCallback(() => {
     if (chargeDialogRef.current === null) {
@@ -117,17 +120,16 @@ export const Top = () => {
 
   const todayRaces =
     raceData != null
-      ? [...raceData.races]
-          .sort(
-            (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-              moment(a.startAt) - moment(b.startAt),
-          )
+      ? [...raceData.races].sort(
+          (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
+            moment(a.startAt) - moment(b.startAt),
+        )
       : [];
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
 
   return (
     <Container>
-      <HeroImage url={assets('/images/hero.webp')} />
+      <HeroImage url={assets("/images/hero.webp")} />
 
       <Spacer mt={Space * 2} />
       {userData && (
@@ -147,23 +149,22 @@ export const Top = () => {
       <section>
         <Heading as="h1">本日のレース</Heading>
         <RecentRaceList>
-          {todayRacesToShow.length == 0 && (
-              [0,1,2].map((key) => (
-                <RecentRaceList.EmptyItem key={key} />
-              ))
-          )}
+          {todayRacesToShow.length == 0 &&
+            [0, 1, 2].map((key) => <RecentRaceList.EmptyItem key={key} />)}
 
-          {todayRacesToShow.length > 0 && (
-              todayRacesToShow.map((race) => (
-                <RecentRaceList.Item key={race.id} race={race} />
-              ))
-          )}
+          {todayRacesToShow.length > 0 &&
+            todayRacesToShow.map((race) => (
+              <RecentRaceList.Item key={race.id} race={race} />
+            ))}
         </RecentRaceList>
       </section>
 
       {userData && (
         <Suspense fallback={<div></div>}>
-          <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
+          <ChargeDialog
+            ref={chargeDialogRef}
+            onComplete={handleCompleteCharge}
+          />
         </Suspense>
       )}
     </Container>

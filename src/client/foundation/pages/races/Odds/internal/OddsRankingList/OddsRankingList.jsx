@@ -1,5 +1,4 @@
-import {sortBy, take} from "lodash";
-import React from "react";
+import { sortBy, take } from "lodash";
 import styled from "styled-components";
 
 import { BaseButton } from "../../../../../components/buttons/BaseButton";

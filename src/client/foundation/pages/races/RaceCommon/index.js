@@ -1,1 +1,1 @@
-export {RaceCommon as default} from "./RaceCommon";
+export { RaceCommon as default } from "./RaceCommon";
