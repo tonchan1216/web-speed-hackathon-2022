@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheetManager } from "styled-components";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
@@ -11,7 +10,7 @@ export const App = () => {
     <StyleSheetManager disableCSSOMInjection>
       <AuthContextProvider>
         <GlobalStyle />
-          <Routes />
+        <Routes />
       </AuthContextProvider>
     </StyleSheetManager>
   );

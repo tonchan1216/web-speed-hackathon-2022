@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 
 /**
  * @typedef AuthContextValues
@@ -8,7 +8,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
  */
 
 /** @type {React.Context<AuthContextValues>} */
-const AuthContext = React.createContext({
+const AuthContext = createContext({
   setUserId: () => {
     throw new Error("AuthContext value is not set");
   },

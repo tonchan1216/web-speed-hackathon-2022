@@ -1,4 +1,3 @@
-import React from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 
 // import { Container } from "../../../components/layouts/Container";
@@ -42,7 +41,6 @@ export const RaceResult = () => {
 
       <Spacer mt={Space * 2} />
       <RaceResultSection />
-
     </>
   );
 };
