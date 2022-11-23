@@ -17,10 +17,13 @@ export const RecentRaceList = ({ children }) => {
   );
 };
 
-const ItemWrapper = styled.li`
+const ItemWrapper = styled.li.attrs(({opacity}) => ({
+  style: {
+    opacity: opacity,
+  }
+}))`
   background: ${Color.mono[0]};
   border-radius: ${Radius.MEDIUM};
-  opacity: ${({ $opacity }) => $opacity};
   padding: ${Space * 3}px;
 `;
 
@@ -87,7 +90,7 @@ const Item = ({ race }) => {
   }, [race.id, startAnimation, abortAnimation, resetAnimation]);
 
   return (
-    <ItemWrapper $opacity={opacity}>
+    <ItemWrapper opacity={opacity}>
       <Stack horizontal alignItems="center" justifyContent="space-between">
         <Stack gap={Space * 1}>
           <RaceTitle>{race.name}</RaceTitle>
@@ -132,7 +135,7 @@ const EmptyItem = () => {
   }, [startAnimation, abortAnimation, resetAnimation]);
 
   return (
-    <ItemWrapper $opacity={opacity}>
+    <ItemWrapper opacity={opacity}>
       <Stack horizontal alignItems="center" justifyContent="space-between">
         <Stack gap={Space * 1}>
           <RaceTitle>Now Loading</RaceTitle>
