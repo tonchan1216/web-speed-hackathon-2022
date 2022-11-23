@@ -17,10 +17,7 @@ const DIST_PUBLIC = abs("./dist/public");
 /** @type {Array<import('webpack').Configuration>} */
 module.exports = [
   {
-    entry: {
-      main: path.join(SRC_ROOT, "client/index.jsx"),
-      // polyfill: ['core-js/stable', 'regenerator-runtime/runtime'],
-    },
+    entry: path.join(SRC_ROOT, "client/index.jsx"),
     module: {
       rules: [
         {
@@ -44,7 +41,7 @@ module.exports = [
                     corejs: 3,
                     modules: "cjs",
                     spec: true,
-                    targets: "defaults",
+                    targets: "last 2 Chrome versions, not dead",
                     useBuiltIns: "usage",
                   },
                 ],
