@@ -10,7 +10,7 @@ const serverConfig = common.findIndex((config) => config.name === "server");
 
 module.exports = [
   merge(common[clientConfig], {
-    devtool: "inline-source-map",
+    devtool: "eval",
     mode: "development",
     plugins: [new BundleAnalyzerPlugin()],
   }),
