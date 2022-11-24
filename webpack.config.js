@@ -9,7 +9,6 @@ const serverConfig = common.findIndex((config) => config.name === "server");
 
 module.exports = [
   merge(common[clientConfig], {
-    devtool: "inline-source-map",
     mode: "production",
     optimization: {
       minimizer: [new TerserPlugin()],
