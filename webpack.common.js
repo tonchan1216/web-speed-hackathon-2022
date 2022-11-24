@@ -17,10 +17,7 @@ const DIST_PUBLIC = abs("./dist/public");
 /** @type {Array<import('webpack').Configuration>} */
 module.exports = [
   {
-    entry: {
-      main: path.join(SRC_ROOT, "client/index.jsx"),
-      // polyfill: ['core-js/stable', 'regenerator-runtime/runtime'],
-    },
+    entry: path.join(SRC_ROOT, "client/index.jsx"),
     module: {
       rules: [
         {
@@ -39,21 +36,11 @@ module.exports = [
               plugins: ["lodash"],
               presets: [
                 [
-                  "@babel/preset-env",
-                  {
-                    corejs: 3,
-                    modules: "cjs",
-                    spec: true,
-                    targets: "defaults",
-                    useBuiltIns: "usage",
-                  },
-                ],
-                [
                   "@babel/preset-react",
                   {
-                    "runtime": "automatic"
-                  }
-                ]
+                    runtime: "automatic",
+                  },
+                ],
               ],
             },
           },
@@ -61,24 +48,8 @@ module.exports = [
       ],
     },
     name: "client",
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          corejsVendor: {
-            chunks: 'all',
-            name: 'vendor-corejs',
-            test: /[\\/]node_modules[\\/](core-js)[\\/]/,
-          },
-          reactVendor: {
-            chunks: 'all',
-            name: 'vendor-react',
-            test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-          },
-        },
-      },
-    },
     output: {
-      chunkFilename: '[name].bundle.js',
+      chunkFilename: "[name].bundle.js",
       filename: "[name].bundle.js",
       path: DIST_PUBLIC,
     },
@@ -91,7 +62,7 @@ module.exports = [
     resolve: {
       extensions: [".js", ".jsx"],
     },
-    target: "web",
+    target: ["web"],
   },
   {
     entry: path.join(SRC_ROOT, "server/index.js"),
