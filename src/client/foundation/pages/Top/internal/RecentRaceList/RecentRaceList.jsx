@@ -17,10 +17,10 @@ export const RecentRaceList = ({ children }) => {
   );
 };
 
-const ItemWrapper = styled.li.attrs(({opacity}) => ({
+const ItemWrapper = styled.li.attrs(({ opacity }) => ({
   style: {
     opacity: opacity,
-  }
+  },
 }))`
   background: ${Color.mono[0]};
   border-radius: ${Radius.MEDIUM};

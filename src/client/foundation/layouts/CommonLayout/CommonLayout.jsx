@@ -1,7 +1,8 @@
+import { lazy, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
-import { Footer } from "../../components/navs/Footer";
 import { Header } from "../../components/navs/Header/Header";
+const Footer = lazy(() => import("../../components/navs/Footer"));
 
 export const CommonLayout = () => {
   return (
@@ -12,7 +13,9 @@ export const CommonLayout = () => {
         <Outlet />
       </main>
 
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
