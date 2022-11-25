@@ -42,10 +42,6 @@ export const Odds = () => {
     [],
   );
 
-  // if (data == null) {
-  //   return <></>;
-  // }
-
   const isRaceClosed =
     data != null ? moment(data.closeAt).isBefore(new Date()) : true;
 
