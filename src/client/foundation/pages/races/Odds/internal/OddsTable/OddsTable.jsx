@@ -163,3 +163,57 @@ export const OddsTable = ({ entries, isRaceClosed, odds, onClickOdds }) => {
     </div>
   );
 };
+
+/** @type {React.VFC<Props>} */
+export const EmptyOddsTable = () => {
+  const headNumbers = without(range(1, 11), 1);
+
+  return (
+    <div>
+      <Stack horizontal>
+        <RankLabel>1位軸</RankLabel>
+        <select value="">
+          <option value="">now loading...</option>
+        </select>
+      </Stack>
+
+      <Spacer mt={Space * 2} />
+      <ScrollWrapper>
+        <div>
+          <Table>
+            <thead>
+              <tr>
+                <th width="64px">2位</th>
+                <th width="32px"></th>
+
+                {headNumbers.map((second) => (
+                  <th key={second} width="auto">
+                    {second}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {headNumbers.map((third, i) => (
+                <tr key={third}>
+                  {i === 0 && <th rowSpan={headNumbers.length}>3位</th>}
+
+                  <th>{third}</th>
+
+                  {headNumbers.map((second) => {
+                    return (
+                      <td key={second} width="auto">
+                        {<BuyButton disabled>-</BuyButton>}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      </ScrollWrapper>
+    </div>
+  );
+};

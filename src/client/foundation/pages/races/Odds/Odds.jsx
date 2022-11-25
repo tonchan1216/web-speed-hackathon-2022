@@ -9,7 +9,7 @@ import { Heading } from "../../../components/typographies/Heading";
 import { Color, Space } from "../../../styles/variables";
 
 import { OddsRankingList } from "./internal/OddsRankingList";
-import { OddsTable } from "./internal/OddsTable";
+import { EmptyOddsTable, OddsTable } from "./internal/OddsTable";
 import { TicketVendingModal } from "./internal/TicketVendingModal";
 
 const Callout = styled.aside`
@@ -42,11 +42,8 @@ export const Odds = () => {
     [],
   );
 
-  if (data == null) {
-    return <></>;
-  }
-
-  const isRaceClosed = moment(data.closeAt).isBefore(new Date());
+  const isRaceClosed =
+    data != null ? moment(data.closeAt).isBefore(new Date()) : true;
 
   return (
     <>
@@ -76,22 +73,28 @@ export const Odds = () => {
       <Heading as="h2">オッズ表</Heading>
 
       <Spacer mt={Space * 2} />
-      <OddsTable
-        entries={data.entries}
-        isRaceClosed={isRaceClosed}
-        odds={data.trifectaOdds}
-        onClickOdds={handleClickOdds}
-      />
+      {data ? (
+        <OddsTable
+          entries={data.entries}
+          isRaceClosed={isRaceClosed}
+          odds={data.trifectaOdds}
+          onClickOdds={handleClickOdds}
+        />
+      ) : (
+        <EmptyOddsTable />
+      )}
 
       <Spacer mt={Space * 4} />
       <Heading as="h2">人気順</Heading>
 
       <Spacer mt={Space * 2} />
-      <OddsRankingList
-        isRaceClosed={isRaceClosed}
-        odds={data.trifectaOdds}
-        onClickOdds={handleClickOdds}
-      />
+      {data && (
+        <OddsRankingList
+          isRaceClosed={isRaceClosed}
+          odds={data.trifectaOdds}
+          onClickOdds={handleClickOdds}
+        />
+      )}
 
       <TicketVendingModal ref={modalRef} odds={oddsKeyToBuy} raceId={raceId} />
     </>
