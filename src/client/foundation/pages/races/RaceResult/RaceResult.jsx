@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // import { Container } from "../../../components/layouts/Container";
 import { Spacer } from "../../../components/layouts/Spacer";
@@ -13,15 +13,10 @@ import { RaceResultSection } from "./internal/RaceResultSection";
 /** @type {React.VFC} */
 export const RaceResult = () => {
   const { raceId } = useParams();
-  const [data] = useOutletContext();
   const { data: ticketData } = useAuthorizedFetch(
     `/api/races/${raceId}/betting-tickets`,
     authorizedJsonFetcher,
   );
-
-  if (data == null) {
-    return <></>;
-  }
 
   return (
     <>
