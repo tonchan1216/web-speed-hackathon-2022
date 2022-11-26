@@ -1,4 +1,3 @@
-import { sortBy, take } from "lodash";
 import styled from "styled-components";
 
 import { BaseButton } from "../../../../../components/buttons/BaseButton";
@@ -65,10 +64,10 @@ const RankNo = styled.div`
 
 /** @type {React.VFC<Props>} */
 export const OddsRankingList = ({ isRaceClosed, odds, onClickOdds }) => {
-  const sortedOdds = take(
-    sortBy(odds, (item) => item.odds),
-    50,
-  );
+  const sortedOdds = odds
+    .concat()
+    .sort((a, b) => (a.odds > b.odds ? 1 : b.odds > a.odds ? -1 : 0))
+    .slice(0, 50);
 
   return (
     <Wrapper>
