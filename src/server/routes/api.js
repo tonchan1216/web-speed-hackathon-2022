@@ -1,3 +1,4 @@
+import fastifyCompress from "@fastify/compress";
 import moment from "moment-mini";
 import { Between, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 
@@ -9,6 +10,11 @@ import { initialize } from "../typeorm/initialize.js";
  * @type {import('fastify').FastifyPluginCallback}
  */
 export const apiRoute = async (fastify) => {
+  await fastify.register(fastifyCompress, {
+    encodings: ["gzip", "deflate"],
+    global: false
+  });
+
   fastify.get("/users/me", async (req, res) => {
     const repo = (await createConnection()).getRepository(User);
 
@@ -99,7 +105,8 @@ export const apiRoute = async (fastify) => {
       throw fastify.httpErrors.notFound();
     }
 
-    res.send(race);
+    res.compress(race);
+    await res;
   });
 
   fastify.get("/races/:raceId/betting-tickets", async (req, res) => {
