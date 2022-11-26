@@ -15,7 +15,7 @@ export const RaceCard = () => {
       <Spacer mt={Space * 2} />
 
       <PlayerPictureList>
-        {data
+        {data.entries
           ? data.entries.map((entry) => (
               <PlayerPictureList.Item
                 key={entry.id}
@@ -36,7 +36,7 @@ export const RaceCard = () => {
 
       <Spacer mt={Space * 4} />
 
-      {data ? <EntryTable entries={data.entries} /> : <></>}
+      {data.entries ? <EntryTable entries={data.entries} /> : <></>}
     </>
   );
 };
