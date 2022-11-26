@@ -33,7 +33,6 @@ module.exports = [
           use: {
             loader: "babel-loader",
             options: {
-              plugins: ["lodash"],
               presets: [
                 [
                   "@babel/preset-react",
@@ -57,7 +56,6 @@ module.exports = [
       new CopyPlugin({
         patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
       }),
-      new LodashModuleReplacementPlugin(),
     ],
     resolve: {
       extensions: [".js", ".jsx"],
