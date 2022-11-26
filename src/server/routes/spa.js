@@ -7,7 +7,7 @@ import fastifyStatic from "@fastify/static";
  * @type {import('fastify').FastifyPluginCallback}
  */
 export const spaRoute = async (fastify) => {
-  fastify.register(fastifyCompress, {
+  await fastify.register(fastifyCompress, {
     encodings: ["gzip", "deflate"],
   });
 
