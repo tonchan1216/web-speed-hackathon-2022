@@ -1,4 +1,3 @@
-import { difference, slice } from "lodash";
 import moment from "moment-mini";
 import {
   lazy,
@@ -37,11 +36,11 @@ function useTodayRacesWithAnimation(races) {
   const timer = useRef(null);
 
   useEffect(() => {
-    const isRacesUpdate =
-      difference(
-        races.map((e) => e.id),
-        prevRaces.current.map((e) => e.id),
-      ).length !== 0;
+    const diff = [
+      races.map((e) => e.id),
+      prevRaces.current.map((e) => e.id),
+    ].reduce((a, b) => a.filter((c) => !b.includes(c)));
+    const isRacesUpdate = diff.length !== 0;
 
     prevRaces.current = races;
     setIsRacesUpdate(isRacesUpdate);
@@ -69,7 +68,7 @@ function useTodayRacesWithAnimation(races) {
       }
 
       numberOfRacesToShow.current++;
-      setRacesToShow(slice(races, 0, numberOfRacesToShow.current));
+      setRacesToShow(races.slice(0, numberOfRacesToShow.current));
     }, 100);
   }, [isRacesUpdate, races]);
 
