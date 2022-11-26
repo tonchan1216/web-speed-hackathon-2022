@@ -1,3 +1,4 @@
+import { useEffect, useReducer } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,7 +8,6 @@ import { Spacer } from "../../../components/layouts/Spacer";
 import { TrimmedImage } from "../../../components/media/TrimmedImage";
 import { TabNav } from "../../../components/navs/TabNav";
 import { Heading } from "../../../components/typographies/Heading";
-import { useFetch } from "../../../hooks/useFetch";
 import { Color, Radius, Space } from "../../../styles/variables";
 import { formatTime } from "../../../utils/DateUtils";
 import { jsonFetcher } from "../../../utils/HttpUtils";
@@ -21,18 +21,113 @@ const LiveBadge = styled.span`
   text-transform: uppercase;
 `;
 
+const reducerFunc = (raceState, action) => {
+  switch (action.type) {
+    case "race":
+      return { ...raceState, race: action.race };
+    case "odds":
+      return { ...raceState, trifectaOdds: action.trifectaOdds };
+    case "entries":
+      return { ...raceState, entries: action.entries };
+    case "raceEntries":
+      return { ...raceState, entries: action.entries, race: action.race };
+    case "oddsEntries":
+      return {
+        ...raceState,
+        entries: action.entries,
+        trifectaOdds: action.trifectaOdds,
+      };
+    case "full":
+      return {
+        ...raceState,
+        entries: action.entries,
+        race: action.race,
+        trifectaOdds: action.trifectaOdds,
+      };
+    default:
+      return raceState;
+  }
+};
+
+const extractRace = (data) => {
+  return {
+    closeAt: data.closeAt,
+    id: data.id,
+    image: data.image,
+    name: data.name,
+    startAt: data.startAt,
+  };
+};
+
 /** @type {React.VFC} */
 export const RaceCommon = () => {
   const { raceId } = useParams();
-  const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
+  const [data, dispatch] = useReducer(reducerFunc, {
+    entries: null,
+    race: null,
+    trifectaOdds: null,
+  });
+
   const path = useLocation().pathname.split("/")[3];
+
+  useEffect(() => {
+    const url = `/api/races/${raceId}`;
+    switch (path) {
+      case "race-card":
+        if (data.entries == null) {
+          jsonFetcher(url + "?type=entries").then((data) => {
+            if (data.race == null) {
+              dispatch({
+                entries: data.entries,
+                race: extractRace(data),
+                type: "raceEntries",
+              });
+            } else {
+              dispatch({ entries: data.entries, type: "entries" });
+            }
+          });
+        }
+        break;
+      case "odds":
+        if (data.entries == null) {
+          jsonFetcher(url + "?type=full").then((data) => {
+            if (data.race == null) {
+              dispatch({
+                entries: data.entries,
+                race: extractRace(data),
+                trifectaOdds: data.trifectaOdds,
+                type: "full",
+              });
+            } else {
+              dispatch({
+                entries: data.entries,
+                trifectaOdds: data.trifectaOdds,
+                type: "oddsEntries",
+              });
+            }
+          });
+        } else if (data.trifectaOdds == null) {
+          jsonFetcher(url + "?type=odds").then((data) => {
+            dispatch({ trifectaOdds: data.trifectaOdds, type: "odds" });
+          });
+        }
+        break;
+      case "result":
+        if (data.race == null) {
+          jsonFetcher(url + "?type=simple").then((data) => {
+            dispatch({ race: extractRace(data), type: "race" });
+          });
+        }
+        break;
+    }
+  }, [path, data, raceId]);
 
   return (
     <Container>
       <Spacer mt={Space * 2} />
-      <Heading as="h1">{data ? data.name : "Now Loading"}</Heading>
+      <Heading as="h1">{data.race ? data.race.name : "Now Loading"}</Heading>
       <p>
-        開始 {data && formatTime(data.startAt)} 締切{" "}
+        開始 {data.race && formatTime(data.race.startAt)} 締切{" "}
         {data && formatTime(data.closeAt)}
       </p>
 
@@ -43,7 +138,7 @@ export const RaceCommon = () => {
         <Spacer mt={Space * 2} />
         <TrimmedImage
           height={225}
-          src={data ? data.image : "/assets/images/races/gray.jpg"}
+          src={data.race ? data.race.image : "/assets/images/races/gray.jpg"}
           type="live"
           width={400}
         />

@@ -43,7 +43,7 @@ export const Odds = () => {
   );
 
   const isRaceClosed =
-    data != null ? moment(data.closeAt).isBefore(new Date()) : true;
+    data.race != null ? moment(data.race.closeAt).isBefore(new Date()) : true;
 
   return (
     <>
@@ -73,7 +73,7 @@ export const Odds = () => {
       <Heading as="h2">オッズ表</Heading>
 
       <Spacer mt={Space * 2} />
-      {data ? (
+      {data.entries && data.trifectaOdds ? (
         <OddsTable
           entries={data.entries}
           isRaceClosed={isRaceClosed}
@@ -88,7 +88,7 @@ export const Odds = () => {
       <Heading as="h2">人気順</Heading>
 
       <Spacer mt={Space * 2} />
-      {data && (
+      {data.trifectaOdds && (
         <OddsRankingList
           isRaceClosed={isRaceClosed}
           odds={data.trifectaOdds}
