@@ -1,7 +1,6 @@
 import moment from "moment-mini";
 import { Between, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 
-import { assets } from "../../client/foundation/utils/UrlUtils.js";
 import { BettingTicket, Race, User } from "../../model/index.js";
 import { createConnection } from "../typeorm/connection.js";
 import { initialize } from "../typeorm/initialize.js";
