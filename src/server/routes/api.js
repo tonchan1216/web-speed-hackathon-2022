@@ -12,7 +12,7 @@ import { initialize } from "../typeorm/initialize.js";
 export const apiRoute = async (fastify) => {
   await fastify.register(fastifyCompress, {
     encodings: ["gzip", "deflate"],
-    global: false
+    global: false,
   });
 
   fastify.get("/users/me", async (req, res) => {
