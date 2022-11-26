@@ -39,13 +39,6 @@ export const apiRoute = async (fastify) => {
     res.status(204).send();
   });
 
-  fastify.get("/hero", async (_req, res) => {
-    const url = assets("/images/hero.jpg");
-    const hash = Math.random().toFixed(10).substring(2);
-
-    res.send({ hash, url });
-  });
-
   fastify.get("/races", async (req, res) => {
     const since =
       req.query.since != null ? moment.unix(req.query.since) : undefined;
@@ -101,20 +94,6 @@ export const apiRoute = async (fastify) => {
 
     const race = await repo.findOne(req.params.raceId, {
       relations: rel,
-    });
-
-    if (race === undefined) {
-      throw fastify.httpErrors.notFound();
-    }
-
-    res.send(race);
-  });
-
-  fastify.get("/races/:raceId/odds", async (req, res) => {
-    const repo = (await createConnection()).getRepository(Race);
-
-    const race = await repo.findOne(req.params.raceId, {
-      relations: ["trifectaOdds"],
     });
 
     if (race === undefined) {
