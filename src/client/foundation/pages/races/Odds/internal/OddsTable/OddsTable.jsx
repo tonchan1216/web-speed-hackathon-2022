@@ -172,7 +172,7 @@ export const EmptyOddsTable = () => {
     <div>
       <Stack horizontal>
         <RankLabel>1位軸</RankLabel>
-        <select value="">
+        <select defaultValue="">
           <option value="">now loading...</option>
         </select>
       </Stack>
