@@ -1,11 +1,5 @@
 import moment from "moment-mini";
-import {
-  lazy,
-  Suspense,
-  useCallback,
-  useMemo,
-  useRef,
-} from "react";
+import { lazy, Suspense, useCallback, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -74,7 +68,7 @@ export const Top = () => {
         moment(a.startAt) - moment(b.startAt),
     );
   }, [raceData]);
-  
+
   return (
     <Container>
       <HeroImage url={assets("/images/hero.webp")} />

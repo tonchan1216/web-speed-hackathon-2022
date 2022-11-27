@@ -63,7 +63,9 @@ export const RecentRaceList = ({ races }) => {
   return (
     <Stack as="ul" gap={Space * 2}>
       {racesToShow.length == 0
-        ? [...Array(races.length).keys()].map((key) => <RecentRaceList.EmptyItem key={key} />)
+        ? [...Array(races.length).keys()].map((key) => (
+            <RecentRaceList.EmptyItem key={key} />
+          ))
         : racesToShow.map((race) => (
             <RecentRaceList.Item key={race.id} race={race} />
           ))}
