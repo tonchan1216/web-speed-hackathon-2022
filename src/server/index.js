@@ -1,5 +1,4 @@
 import "regenerator-runtime/runtime";
-import fastifyCors from "@fastify/cors";
 import fastifySensible from "@fastify/sensible";
 import fastify from "fastify";
 
@@ -27,7 +26,6 @@ const server = fastify({
   logger: envToLogger[process.env.NODE_ENV] ?? true, // defaults to true if no entry matches in the map
 });
 server.register(fastifySensible);
-server.register(fastifyCors);
 
 server.addHook("onRequest", async (req, res) => {
   const repo = (await createConnection()).getRepository(User);
@@ -50,7 +48,7 @@ server.addHook("onRequest", async (req, res) => {
   } else {
     res.header("Cache-Control", "no-cache, no-store, no-transform");
   }
-  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Connection", "close");
 });
 
 server.register(apiRoute, { prefix: "/api" });
