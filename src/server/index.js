@@ -48,7 +48,7 @@ server.addHook("onRequest", async (req, res) => {
   } else {
     res.header("Cache-Control", "no-cache, no-store, no-transform");
   }
-  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Connection", "close");
 });
 
 server.register(apiRoute, { prefix: "/api" });
