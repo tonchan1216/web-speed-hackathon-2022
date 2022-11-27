@@ -127,8 +127,8 @@ export const RaceCommon = () => {
       <Spacer mt={Space * 2} />
       <Heading as="h1">{data.race ? data.race.name : "Now Loading"}</Heading>
       <p>
-        開始 {data.race ? formatTime(data.race.startAt) : "xx:xx"} 締切{" "}
-        {data.race ? formatTime(data.race.closeAt) : "xx:xx"}
+        開始 {data.race && formatTime(data.race.startAt)} 締切{" "}
+        {data.race && formatTime(data.race.closeAt)}
       </p>
 
       <Spacer mt={Space * 2} />

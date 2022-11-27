@@ -2,6 +2,7 @@
 const path = require("path");
 
 const CopyPlugin = require("copy-webpack-plugin");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const nodeExternals = require("webpack-node-externals");
 
 function abs(...args) {

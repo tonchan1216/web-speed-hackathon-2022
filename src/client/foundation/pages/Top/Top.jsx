@@ -1,5 +1,12 @@
 import moment from "moment-mini";
-import { lazy, Suspense, useCallback, useMemo, useRef } from "react";
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -16,6 +23,65 @@ import { assets } from "../../utils/UrlUtils.js";
 const ChargeDialog = lazy(() => import("./internal/ChargeDialog"));
 import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
+
+/**
+ * @param {Model.Race[]} races
+ * @returns {Model.Race[]}
+ */
+function useTodayRacesWithAnimation(races) {
+  const [isRacesUpdate, setIsRacesUpdate] = useState(false);
+  const [racesToShow, setRacesToShow] = useState([]);
+  const numberOfRacesToShow = useRef(0);
+  const prevRaces = useRef(races);
+  const timer = useRef(null);
+
+  useEffect(() => {
+    const diff = [
+      races.map((e) => e.id),
+      prevRaces.current.map((e) => e.id),
+    ].reduce((a, b) => a.filter((c) => !b.includes(c)));
+    const isRacesUpdate = diff.length !== 0;
+
+    prevRaces.current = races;
+    setIsRacesUpdate(isRacesUpdate);
+  }, [races]);
+
+  useEffect(() => {
+    if (!isRacesUpdate) {
+      return;
+    }
+    // 視覚効果 off のときはアニメーションしない
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRacesToShow(races);
+      return;
+    }
+
+    numberOfRacesToShow.current = 0;
+    if (timer.current !== null) {
+      clearInterval(timer.current);
+    }
+
+    timer.current = setInterval(() => {
+      if (numberOfRacesToShow.current >= races.length) {
+        clearInterval(timer.current);
+        return;
+      }
+
+      numberOfRacesToShow.current++;
+      setRacesToShow(races.slice(0, numberOfRacesToShow.current));
+    }, 100);
+  }, [isRacesUpdate, races]);
+
+  useEffect(() => {
+    return () => {
+      if (timer.current !== null) {
+        clearInterval(timer.current);
+      }
+    };
+  }, []);
+
+  return racesToShow;
+}
 
 const ChargeButton = styled.button`
   background: ${Color.mono[700]};
@@ -58,16 +124,14 @@ export const Top = () => {
     revalidate();
   }, [revalidate]);
 
-  const todayRaces = useMemo(() => {
-    if (raceData == null) {
-      return [];
-    }
-
-    return [...raceData.races].sort(
-      (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-        moment(a.startAt) - moment(b.startAt),
-    );
-  }, [raceData]);
+  const todayRaces =
+    raceData != null
+      ? [...raceData.races].sort(
+          (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
+            moment(a.startAt) - moment(b.startAt),
+        )
+      : [];
+  const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
 
   return (
     <Container>
@@ -90,7 +154,15 @@ export const Top = () => {
       <Spacer mt={Space * 2} />
       <section>
         <Heading as="h1">本日のレース</Heading>
-        <RecentRaceList races={todayRaces} />
+        <RecentRaceList>
+          {todayRacesToShow.length == 0 &&
+            [0, 1, 2].map((key) => <RecentRaceList.EmptyItem key={key} />)}
+
+          {todayRacesToShow.length > 0 &&
+            todayRacesToShow.map((race) => (
+              <RecentRaceList.Item key={race.id} race={race} />
+            ))}
+        </RecentRaceList>
       </section>
 
       {userData && (

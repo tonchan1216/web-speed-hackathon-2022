@@ -6427,6 +6427,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-webpack-plugin@npm:^0.11.6":
+  version: 0.11.6
+  resolution: "lodash-webpack-plugin@npm:0.11.6"
+  dependencies:
+    lodash: ^4.17.20
+  peerDependencies:
+    webpack: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.1.0
+  checksum: 0ee7ca709592059bc8a83720d7f458efb643a0a538f408efc54a86d72282b325646774d4da90f9e5559b3909a978656077e42fae83697f50e6f9f35fd513a8f5
+  languageName: node
+  linkType: hard
+
 "lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
@@ -10313,6 +10324,7 @@ __metadata:
     framer-motion: ^6.2.8
     html-webpack-plugin: ^5.5.0
     lodash: ^4.17.21
+    lodash-webpack-plugin: ^0.11.6
     modern-css-reset: ^1.4.0
     moment-mini: ^2.29.4
     nodemon: ^2.0.15
