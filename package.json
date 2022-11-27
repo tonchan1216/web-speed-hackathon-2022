@@ -70,7 +70,6 @@
   "dependencies": {
     "@babel/runtime": "^7.17.2",
     "@fastify/compress": "^6.1.1",
-    "@fastify/cors": "^8.2.0",
     "@fastify/sensible": "^5.1.1",
     "@fastify/static": "^6.5.0",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
