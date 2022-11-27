@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { LinkButton } from "../../../../components/buttons/LinkButton";
@@ -9,10 +9,66 @@ import { easeOutCubic, useAnimation } from "../../../../hooks/useAnimation";
 import { Color, FontSize, Radius, Space } from "../../../../styles/variables";
 import { formatCloseAt } from "../../../../utils/DateUtils";
 
-export const RecentRaceList = ({ children }) => {
+export const RecentRaceList = ({ races }) => {
+  const [isRacesUpdate, setIsRacesUpdate] = useState(false);
+  const [racesToShow, setRacesToShow] = useState([]);
+  const numberOfRacesToShow = useRef(0);
+  const prevRaces = useRef(races);
+  const timer = useRef(null);
+
+  useEffect(() => {
+    const diff = [
+      races.map((e) => e.id),
+      prevRaces.current.map((e) => e.id),
+    ].reduce((a, b) => a.filter((c) => !b.includes(c)));
+    const isRacesUpdate = diff.length !== 0;
+    prevRaces.current = races;
+    setIsRacesUpdate(isRacesUpdate);
+  }, [races]);
+
+  useEffect(() => {
+    if (!isRacesUpdate) {
+      return;
+    }
+    // 視覚効果 off のときはアニメーションしない
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRacesToShow(races);
+      return;
+    }
+
+    numberOfRacesToShow.current = 0;
+    if (timer.current !== null) {
+      clearInterval(timer.current);
+    }
+
+    timer.current = setInterval(() => {
+      if (numberOfRacesToShow.current >= races.length) {
+        clearInterval(timer.current);
+        return;
+      }
+
+      numberOfRacesToShow.current++;
+      setRacesToShow(races.slice(0, numberOfRacesToShow.current));
+    }, 100);
+  }, [isRacesUpdate, races]);
+
+  useEffect(() => {
+    return () => {
+      if (timer.current !== null) {
+        clearInterval(timer.current);
+      }
+    };
+  }, []);
+
   return (
     <Stack as="ul" gap={Space * 2}>
-      {children}
+      {racesToShow.length == 0
+        ? [...Array(races.length).keys()].map((key) => (
+            <RecentRaceList.EmptyItem key={key} />
+          ))
+        : racesToShow.map((race) => (
+            <RecentRaceList.Item key={race.id} race={race} />
+          ))}
     </Stack>
   );
 };

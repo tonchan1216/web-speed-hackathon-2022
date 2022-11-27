@@ -64,8 +64,8 @@ const InactiveBuyButton = styled.div`
 `;
 
 const range = (n) => {
-  return [...Array(n).keys()].map(k => k + 1)  // output: [1, 2, 3, 4]
-}
+  return [...Array(n).keys()].map((k) => k + 1); // output: [1, 2, 3, 4]
+};
 
 /**
  * @param {number} second
@@ -90,7 +90,7 @@ export const OddsTable = ({ entries, isRaceClosed, odds, onClickOdds }) => {
     setFirstKey(parseInt(e.currentTarget.value, 10));
   }, []);
 
-  const headNumbers = range(entries.length).filter((v)=>(v !== firstKey));
+  const headNumbers = range(entries.length).filter((v) => v !== firstKey);
   const filteredOdds = odds.filter((item) => item.key[0] === firstKey);
   const oddsMap = filteredOdds.reduce((acc, cur) => {
     const [, second, third] = cur.key;
@@ -168,7 +168,7 @@ export const OddsTable = ({ entries, isRaceClosed, odds, onClickOdds }) => {
 
 /** @type {React.VFC<Props>} */
 export const EmptyOddsTable = () => {
-  const headNumbers = range(10).filter((v)=>(v!==1));
+  const headNumbers = range(10).filter((v) => v !== 1);
 
   return (
     <div>
